@@ -8,16 +8,20 @@ videoparser has two parsing modes: packet mode and frame mode.
 packet mode only parses encapsulation layer information, but frame mode will parses encode layer information, so frame mode will decode files.
 
 summary screenshot:
-![summary screenshot](.github/packet_summary.png?raw=true)
+
+<img src=".github/packet_summary.png?raw=true" width = "500" alt="packet_summary" align=center />
 
 packet mode screenshots:
-![packet video](.github/packet_video.png?raw=true)
 
-![packet audio](.github/packet_audio.png?raw=true)
+<img src=".github/packet_video.png?raw=true" width = "500" alt="packet_video" align=center />
+
+<img src=".github/packet_audio.png?raw=true" width = "500" alt="packet_audio" align=center />
 
 frame mode screenshots:
-![frame video](.github/frame_video.png?raw=true)
-![frame audio](.github/frame_audio.png?raw=true)
+
+<img src=".github/frame_video.png?raw=true" width = "500" alt="frame_video" align=center />
+
+<img src=".github/frame_audio.png?raw=true" width = "500" alt="frame_audio" align=center />
 
 ## Building
 #### Requirements
@@ -28,4 +32,5 @@ frame mode screenshots:
 - Build tools: MSVC, MinGW, GCC, XCode etc.
 
 First you must replace paths about ffmpeg libs and header in pro file, as belows: 
-![ffmpeg paths](.github/build_settings.png)
+
+<img src=".github/build_settings.png?raw=true" width = "500" alt="build_settings" align=center />
