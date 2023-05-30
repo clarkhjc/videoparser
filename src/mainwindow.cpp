@@ -37,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->btn_start, &QPushButton::clicked, this, &MainWindow::parse_file);
 
     ui->lb_progress->setVisible(false);
+    ui->textBrowser->setOpenLinks(false);
 }
 
 MainWindow::~MainWindow()
@@ -152,7 +153,7 @@ void MainWindow::receive_parse_result(const QString res, const QString parse_mod
                 }
             }
         }
-        ui->textBrowser->setText(summary);
+        ui->textBrowser->setHtml(summary);
         update_recent_action_list(file_path);
     } else if (res == "interrupt") {
         QMessageBox::warning(nullptr, "warning", "The user canceled the operation");
