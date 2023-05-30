@@ -33,14 +33,14 @@ static void print_fps(QString &info, double d, const char *postfix)
 void parse_summary_info(AVFormatContext *ic, QString &summary_info)
 {
     QFileInfo file_info(ic->url);
-    summary_info = "<h2>basic information</h2><br />";
-    summary_info += "&nbsp;&nbsp;<b>File path:</b> " + QString(ic->url) + "<br /><br />";
-    summary_info += "&nbsp;&nbsp;<b>File format:</b> " + QString(ic->iformat->name) + "<br /><br />";
+    summary_info = "<h2>basic information:</h2><br />";
+    summary_info += "&nbsp;&nbsp;&nbsp;&nbsp;<b>File path:</b> " + QString(ic->url) + "<br /><br />";
+    summary_info += "&nbsp;&nbsp;&nbsp;&nbsp;<b>File format:</b> " + QString(ic->iformat->name) + "<br /><br />";
 
     QString file_size = size_human(file_info.size());
-    summary_info += "&nbsp;&nbsp;<b>File size:</b> " + file_size + "<br /><br />";
+    summary_info += "&nbsp;&nbsp;&nbsp;&nbsp;<b>File size:</b> " + file_size + "<br /><br />";
     if (ic) {
-        summary_info += "&nbsp;&nbsp;<b>Duration:</b> ";
+        summary_info += "&nbsp;&nbsp;&nbsp;&nbsp;<b>Duration:</b> ";
         if (ic->duration != AV_NOPTS_VALUE) {
             int64_t hours, mins, secs, us;
             int64_t duration = ic->duration + (ic->duration <= INT64_MAX - 5000 ? 5000 : 0);
@@ -78,7 +78,7 @@ void parse_summary_info(AVFormatContext *ic, QString &summary_info)
         else
             summary_info += "N/A";
 
-        summary_info += "<h2>stream information</h2>";
+        summary_info += "<h2>stream information:</h2>";
         for (unsigned int i = 0; i < ic->nb_streams; i++) {
             char buf[256];
             int flags = ic->iformat->flags;
@@ -100,7 +100,7 @@ void parse_summary_info(AVFormatContext *ic, QString &summary_info)
             avcodec_string(buf, sizeof(buf), avctx, 0);
             avcodec_free_context(&avctx);
 
-            summary_info += "&nbsp;&nbsp;Stream #" + QString::number(i);
+            summary_info += "&nbsp;&nbsp;&nbsp;&nbsp;Stream #" + QString::number(i);
             if (flags & AVFMT_SHOW_IDS)
                 summary_info += "[0x" + QString().setNum(st->id, 16) + "]";
             if (lang) {
