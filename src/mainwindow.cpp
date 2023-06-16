@@ -420,7 +420,10 @@ void MainWindow::add_row_for_video(int row, const VideoPacketInfo &info)
     item1->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     ui->tw_video_packet->setItem(row, 1, item1);
 
-    QTableWidgetItem *item2 = new QTableWidgetItem(QString::number(info.pkt_dts));
+    QString str_packet_dts = "N/A";
+    if (info.pkt_dts != AV_NOPTS_VALUE)
+        str_packet_dts = QString::number(info.pkt_dts);
+    QTableWidgetItem *item2 = new QTableWidgetItem(str_packet_dts);
     item2->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     ui->tw_video_packet->setItem(row, 2, item2);
 
@@ -428,7 +431,10 @@ void MainWindow::add_row_for_video(int row, const VideoPacketInfo &info)
     item3->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     ui->tw_video_packet->setItem(row, 3, item3);
 
-    QTableWidgetItem *item4 = new QTableWidgetItem(QString::number(info.pkt_pts));
+    QString str_packet_pts = "N/A";
+    if (info.pkt_pts != AV_NOPTS_VALUE)
+        str_packet_pts = QString::number(info.pkt_pts);
+    QTableWidgetItem *item4 = new QTableWidgetItem(str_packet_pts);
     item4->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     ui->tw_video_packet->setItem(row, 4, item4);
 
@@ -450,7 +456,10 @@ void MainWindow::add_row_for_audio(int row, const VideoPacketInfo &info)
     item1->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     ui->tw_audio_packet->setItem(row, 1, item1);
 
-    QTableWidgetItem *item2 = new QTableWidgetItem(QString::number(info.pkt_dts));
+    QString str_packet_dts = "N/A";
+    if (info.pkt_dts != AV_NOPTS_VALUE)
+        str_packet_dts = QString::number(info.pkt_dts);
+    QTableWidgetItem *item2 = new QTableWidgetItem(str_packet_dts);
     item2->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     ui->tw_audio_packet->setItem(row, 2, item2);
 
@@ -458,7 +467,10 @@ void MainWindow::add_row_for_audio(int row, const VideoPacketInfo &info)
     item3->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     ui->tw_audio_packet->setItem(row, 3, item3);
 
-    QTableWidgetItem *item4 = new QTableWidgetItem(QString::number(info.pkt_pts));
+    QString str_packet_pts = "N/A";
+    if (info.pkt_pts != AV_NOPTS_VALUE)
+        str_packet_pts = QString::number(info.pkt_pts);
+    QTableWidgetItem *item4 = new QTableWidgetItem(str_packet_pts);
     item4->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     ui->tw_audio_packet->setItem(row, 4, item4);
 

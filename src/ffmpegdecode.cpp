@@ -176,11 +176,11 @@ bool FFmpegDecode::flush_packet(VideoPacketInfo &pkt_info)
         return true;
     }
 
-    if (decode_video(nullptr)) {
+    if ((UNKNOWN_INDEX != video_idx_) && decode_video(nullptr)) {
         pkt_info = video_infos_.first();
         video_infos_.removeFirst();
         return true;
-    } else if (decode_audio(nullptr)) {
+    } else if ((UNKNOWN_INDEX != audio_idx_) && decode_audio(nullptr)) {
         pkt_info = audio_infos_.first();
         audio_infos_.removeFirst();
         return true;

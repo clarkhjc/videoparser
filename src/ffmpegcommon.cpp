@@ -75,8 +75,8 @@ void parse_summary_info(AVFormatContext *ic, QString &summary_info)
             summary_info += QString::number(secs) + ".";
             QString us_str = QString("%1").arg((int)av_rescale(us, 1000000, AV_TIME_BASE), 6, 10, QLatin1Char('0'));
             summary_info += us_str;
-            summary_info += " ";
         }
+        summary_info += " ";
         summary_info += "bitrate:";
         if (ic->bit_rate)
             summary_info += QString::number(ic->bit_rate / 1000) + " kb/s";
