@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include <QApplication>
 #include <QMutex>
 #include <QDateTime>
@@ -61,8 +61,14 @@ void logInit()
     g_file.setFileName(logName);
     g_file.open(QIODevice::WriteOnly | QIODevice::Append);
     g_textStream.setDevice(&g_file);
+
     g_textStream.setGenerateByteOrderMark(true);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,2,0))
     g_textStream.setEncoding(QStringConverter::Utf8);
+#else
+    g_textStream.setCodec("UTF-8");
+#endif
+
     qInstallMessageHandler(outputMessage);
 }
 
