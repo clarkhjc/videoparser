@@ -26,7 +26,7 @@ void ParseFile::stop()
 
 void ParseFile::on_timer()
 {
-    qDebug() << "packet_dts_: " << packet_dts_ << "duration: " << duration_;
+    //qDebug() << "packet_dts_: " << packet_dts_ << "duration: " << duration_;
     if (duration_) {
         double percent = 100.0 * packet_dts_ / duration_;
         QString str_percent = QString::number(percent, 'f', 2) + "%";

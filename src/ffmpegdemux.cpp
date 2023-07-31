@@ -23,7 +23,7 @@ bool FFmpegDemux::start(int video_index, int audio_index)
 {
     error_info_.clear();
     /* open input file, and allocate format context */
-    std::string tmp(url_.toLocal8Bit().data());
+    std::string tmp = QString2string(url_);
     const char *file_path = tmp.c_str();
 
     if (avformat_open_input(&fmt_ctx_, file_path, nullptr, nullptr) < 0) {

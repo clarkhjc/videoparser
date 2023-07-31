@@ -27,7 +27,7 @@ bool FFmpegDecode::start(int video_index, int audio_index)
 {
     error_info_.clear();
     /* open input file, and allocate format context */
-    std::string tmp(url_.toLocal8Bit().data());
+    std::string tmp = QString2string(url_);
     const char *file_path = tmp.c_str();
 
     if (avformat_open_input(&fmt_ctx_, file_path, nullptr, nullptr) < 0) {
@@ -231,11 +231,14 @@ bool FFmpegDecode::open_codec(AVStream *st, AVCodecContext **dec_ctx)
     Q_UNUSED(ret);
 
     /* Init the decoders */
-    if ((ret = avcodec_open2(*dec_ctx, dec, NULL)) < 0) {
+    AVDictionary *dict = NULL;
+    av_dict_set(&dict, "threads", "auto", 0);
+    if ((ret = avcodec_open2(*dec_ctx, dec, &dict)) < 0) {
         error_info_ = "[FFmpegDecode::open_codec] Failed to open " + media_type + " codec";
         return false;
     }
     Q_UNUSED(ret);
+    av_dict_free(&dict);
     return true;
 }
 

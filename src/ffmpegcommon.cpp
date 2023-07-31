@@ -148,7 +148,7 @@ QString analyse(const QString &url, QList<QString> &video_tracks, QList<QString>
     QString error_info;
 
     /* open input file, and allocate format context */
-    std::string tmp(url.toLocal8Bit().data());
+    std::string tmp = QString2string(url);
     const char *file_path = tmp.c_str();
 
     AVFormatContext *fmt_ctx = nullptr;
@@ -184,4 +184,20 @@ QString analyse(const QString &url, QList<QString> &video_tracks, QList<QString>
 
     avformat_close_input(&fmt_ctx);
     return error_info;
+}
+
+std::string QString2string(const QString & qstr)
+{
+#ifdef Q_OS_WIN
+    std::string str = qstr.toStdString();
+    return str;
+#else
+    std::string str = qstr.toLocal8Bit().data();
+    return str;
+#endif
+}
+
+QString string2QString(const std::string & str)
+{
+    return QString::fromStdString(str);
 }

@@ -5,6 +5,7 @@
 #include <QStringList>
 #include <QFile>
 #include <QFileInfo>
+#include <iostream>
 
 extern "C" {
 #include <libavutil/imgutils.h>
@@ -61,5 +62,8 @@ QString size_human(quint64 size);
 void parse_summary_info(AVFormatContext *ic, QString &summary_info);
 
 QString analyse(const QString &url, QList<QString> &video_tracks, QList<QString> &audio_tracks);
+
+std::string QString2string(const QString & qstr);
+QString string2QString(const std::string & str);
 
 #endif // FFMPEGCOMMON_H
