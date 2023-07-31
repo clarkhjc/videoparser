@@ -1,4 +1,4 @@
-﻿#include "mainwindow.h"
+#include "mainwindow.h"
 #include <QApplication>
 #include <QMutex>
 #include <QDateTime>
@@ -13,10 +13,9 @@
 //DEFINES += QT_NO_DEBUG_OUTPUT
 //DEFINES += QT_NO_INFO_OUTPUT
 
-static QString logFileName;
-static QMutex mutex;
-static QFile file;
-static QTextStream textStream;
+static QMutex g_mutex;
+static QFile g_file;
+static QTextStream g_textStream;
 
 void outputMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -42,53 +41,28 @@ void outputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
     text.append(QString("[%1: Line: %2]").arg(QString(context.file)).arg(context.line));
     text.append(QString("[Function: %1] ").arg(QString(context.function)));
 
-    mutex.lock();
-    textStream << text << QString("Message: %1").arg(msg) << endl;
-    mutex.unlock();
+    g_mutex.lock();
+    g_textStream << text << QString("Message: %1").arg(msg) << Qt::endl;
+    g_mutex.unlock();
 }
 
-void logInit(QString logfileName)
+void logInit()
 {
-    logFileName = logfileName;
-    QFileInfo qfi(logFileName);
-    if (qfi.size() > 20*1024*1024) {
-        QDateTime qdt;
-        qint64 timestamp = qdt.currentMSecsSinceEpoch();
-        QFile::rename(logFileName, logFileName + QString::number(timestamp));
+    QDir dir("log");
+    if (!dir.exists()) {
+        QDir dir;
+        dir.mkdir("log");
     }
-    {
-        QMutexLocker locker(&mutex);
-        QFile file(logFileName);
-        file.open(QIODevice::ReadOnly);
-        QTextStream textStream(&file);
-        QString temp;
-        QStringList tempList;
-        QRegExp regExp(".*(20\\d\\d-\\d\\d-\\d\\d).*");
-        while (false == textStream.atEnd()) {
-            temp = textStream.readLine();
-            if (temp.isEmpty()) {
-                continue;
-            }
-            if (temp.indexOf(regExp) >= 0) {
-                QDate date = QDate::fromString(regExp.cap(1), "yyyy-MM-dd");
-                QDate currentDate = QDate::currentDate();
-                if (date.daysTo(currentDate) < date.day()) {
-                    tempList << temp;
-                    tempList << textStream.readLine();
-                }
-            }
-        }
-        file.close();
-        file.open(QIODevice::Truncate | QIODevice::WriteOnly);
-        textStream.setDevice(&file);
-        for (auto iterator = tempList.begin(); iterator != tempList.end(); iterator++) {
-            textStream << *iterator << endl;
-        }
-        file.close();
-    }
-    file.setFileName(logFileName);
-    file.open(QIODevice::WriteOnly | QIODevice::Append);
-    textStream.setDevice(&file);
+    qDebug() << dir.absolutePath();
+
+    QString currentDate = QDateTime::currentDateTime().toString("yyyyMMdd");
+    QString logName = "log/log-" + currentDate + ".txt";
+
+    g_file.setFileName(logName);
+    g_file.open(QIODevice::WriteOnly | QIODevice::Append);
+    g_textStream.setDevice(&g_file);
+    g_textStream.setGenerateByteOrderMark(true);
+    g_textStream.setEncoding(QStringConverter::Utf8);
     qInstallMessageHandler(outputMessage);
 }
 
@@ -96,10 +70,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QString currentDate = QDateTime::currentDateTime().toString("yyyyMMdd");
-    QString logName = "log-" + currentDate + ".txt";
-    QString logFileName = "log/" + logName;
-    logInit(logFileName);
+    logInit();
 
     qDebug("app is running...");
 
